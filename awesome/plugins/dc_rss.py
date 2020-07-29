@@ -101,7 +101,7 @@ def utc_format(utc):
 def save_file(item):
     # 先将字典对象转化为可写入文本的字符串
     item = json.dumps(item)
-    path = './awesome/plugins/pl_config/dc_rss.json'   #
+    path = './awesome/plugins/pl_config/dc_rss_lastitem.json'   #
     try:
         with open(path, "w", encoding='utf-8') as f:
             f.write(item + "\n")
@@ -114,7 +114,7 @@ def save_file(item):
 # 获取 json 文件数据
 # TODO:日报功能
 def get_data():
-    path = './awesome/plugins/pl_config/dc_rss.json'
+    path = './awesome/plugins/pl_config/dc_rss_lastitem.json'
     data = 0
     try:
         with open(path, "r", encoding='utf-8') as f:

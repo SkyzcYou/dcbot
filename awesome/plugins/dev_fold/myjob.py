@@ -3,6 +3,9 @@ import os
 
 from apscheduler.schedulers.blocking import BlockingScheduler
 
+'''
+APSScheduler 示例
+'''
 
 def tick():
     print('定时任务： %s' % datetime.now())

@@ -5,7 +5,9 @@ import pytz
 from aiocqhttp.exceptions import Error as CQHttpError
 from nonebot import on_command, CommandSession
 
-from awesome.plugins import news_spiders
+from awesome.plugins.util import news_spiders
+from awesome.plugins.util.huanqiu_news_api import *
+
 
 '''
  每日早安&晚安时间
@@ -27,11 +29,19 @@ week_day_dict = {
 async def _():
     bot = nonebot.get_bot()
     now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    tech_news = news_spiders.get_news(TECH_URL)
+
     push_message = \
         "> DrinkCoffee-MorningTime\n" \
-        + "现在时间：" \
-        + "早安心语：向每一个充满阳光的清晨说早安~\n" \
-        + "> Hello World!"
+        + f"NOW：{now.year}-{now.month}-{now.day} {week_day_dict[now.weekday()]} {now.hour}:{now.minute}" \
+        + "\n今日科技早报" \
+        + "\n1. " + tech_news[0] \
+        + "\n2. " + tech_news[1] \
+        + "\n3. " + tech_news[2] \
+        + "\n4. " + tech_news[3] \
+        + "\n5. " + tech_news[4] \
+        + "\n详情：http://t.cn/AiRcD2jq"
+
     try:
         await bot.send_group_msg(group_id=1134452485,
                                  message=push_message)
@@ -42,7 +52,7 @@ async def _():
 # 命令任务：手动获取新闻
 @on_command('tech_news', aliases=('科技新闻'), only_to_me=False)
 async def send_tech_news(session: CommandSession):
-    tech_news = news_spiders.get_tech_news()
+    tech_news = news_spiders.get_news(TECH_URL)
     now = datetime.now(pytz.timezone('Asia/Shanghai'))
 
 
