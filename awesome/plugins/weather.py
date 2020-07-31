@@ -1,4 +1,13 @@
 from nonebot import on_command,CommandSession
+import requests
+
+'''
+和风天气 API
+URL : https://geoapi.heweather.net/v2/city/lookup?{参数}
+'''
+city_info_api = 'https://geoapi.heweather.net/v2/city/lookup?'
+heweather_api = 'https://devapi.heweather.net/v7/weather/now?'
+KEY = '015771f141274daa80f1684b5624f1c3'
 
 # on_command 装饰器将函数声明为一个命令处理器
 # 这里 weather 为命令的名字，同时允许使用别名[天气][天气预报][查天气]
@@ -35,4 +44,25 @@ async def _(session:CommandSession):
 async def get_weather_of_city(city:str) -> str:
     # 这里简单返回一个字符串
     # 实际应用中，这里应该调用返回真实数据的天气 API ,并拼接成天气预报内容
-    return f'{city}的天气是......'
+    try:
+        city_info_params = {
+            'key':KEY,
+            'location': city
+        }
+        city_info_response = requests.get(city_info_api, params=city_info_params)
+        city_id = city_info_response.json()['location'][0]['id']
+
+        weather_params = {
+            'key': KEY,
+            'location': city_id
+        }
+        weather_response = requests.get(heweather_api,params=weather_params)
+        now = weather_response.json()['now']
+        push_message = f"【{city}】现在天气{now['text']}" \
+                       + f"\n气温:{now['temp']},体感温度:{now['feelsLike']}" \
+                       + f"\n吹的是{now['windDir']},风速是{now['windSpeed']}公里/小时,是{now['windScale']}级风呢" \
+                       + f"\n能见度{now['vis']}公里，云量{now['cloud']}%"
+        return push_message
+    except Exception as e:
+        print(e)
+        return f'抱歉...查询失败了...'

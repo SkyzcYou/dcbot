@@ -1,11 +1,11 @@
 import re,json
 import nonebot
-import pytz
-import datetime,feedparser,time,os
+import datetime,feedparser,os
 
 from nonebot import on_command,CommandSession
-from apscheduler.schedulers.blocking import BlockingScheduler
 from aiocqhttp.exceptions import Error as CQHttpError
+from awesome.plugins.pl_config import global_qqnumber
+
 
 '''
 DC_RSS BOT
@@ -30,8 +30,8 @@ async def dc_rss_send(session:CommandSession):
     + "\n" + message['entries_link']
     await session.send(push_message)
 
-# 计划任务。每天 8-20点 每10分钟 执行一次
-@nonebot.scheduler.scheduled_job('cron', hour='8-23',minute='0/10')
+# 计划任务。每天 8-23点 每20分钟 执行一次
+@nonebot.scheduler.scheduled_job('cron', hour='8-22',minute='0/20')
 async def _():
     message = rss_parse()
     push_message = \
@@ -49,7 +49,7 @@ async def _():
     try:
         if now_updated != old_updated:
             # await bot.send_group_msg(group_id=762186255, message=push_message)
-            await bot.send_group_msg(group_id=1134452485,message=push_message)
+            await bot.send_group_msg(group_id=global_qqnumber.RSS_TEST,message=push_message)
             # 存储数据
             save_file(message)
         else:

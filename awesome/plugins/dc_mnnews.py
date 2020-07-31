@@ -2,9 +2,11 @@ from datetime import datetime
 
 import nonebot
 import pytz
+
 from aiocqhttp.exceptions import Error as CQHttpError
 from nonebot import on_command, CommandSession
 
+from awesome.plugins.pl_config import global_qqnumber
 from awesome.plugins.util import news_spiders
 from awesome.plugins.util.huanqiu_news_api import *
 
@@ -43,7 +45,7 @@ async def _():
         + "\n详情：http://t.cn/AiRcD2jq"
 
     try:
-        await bot.send_group_msg(group_id=1134452485,
+        await bot.send_group_msg(group_id=global_qqnumber.RSS_TEST,
                                  message=push_message)
     except CQHttpError:
         pass
@@ -77,11 +79,11 @@ async def _():
     now = datetime.now(pytz.timezone('Asia/Shanghai'))
     push_message = \
         "> DrinkCoffee-NightTime\n" \
-        + "\nTITLE： " \
-        + "\nSUMMARY： " + '...' \
-        + "\n\nBY: "
+        + "\n今日社区热帖：" \
+        + "\n" + '...' \
+        + "\n详情: http://bbs.skyzc.top"
     try:
-        await bot.send_group_msg(group_id=1134452485,
+        await bot.send_group_msg(group_id=global_qqnumber.RSS_TEST,
                                  message=push_message)
     except CQHttpError:
         pass
