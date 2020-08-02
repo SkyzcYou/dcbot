@@ -8,6 +8,7 @@ from nonebot import on_command, CommandSession
 
 from awesome.plugins.pl_config import global_qqnumber
 from awesome.plugins.util import news_spiders
+from awesome.plugins.util import dc_spiders
 from awesome.plugins.util.huanqiu_news_api import *
 
 
@@ -47,6 +48,8 @@ async def _():
     try:
         await bot.send_group_msg(group_id=global_qqnumber.RSS_TEST,
                                  message=push_message)
+        await bot.send_group_msg(group_id=global_qqnumber.DC_CS,
+                                 message=push_message)
     except CQHttpError:
         pass
 
@@ -77,13 +80,21 @@ async def send_tech_news(session: CommandSession):
 async def _():
     bot = nonebot.get_bot()
     now = datetime.now(pytz.timezone('Asia/Shanghai'))
+    last_item = dc_spiders.get_lastitem()
+
     push_message = \
         "> DrinkCoffee-NightTime\n" \
-        + "\n今日社区热帖：" \
-        + "\n" + '...' \
-        + "\n详情: http://bbs.skyzc.top"
+        + f"NOW：{now.year}-{now.month}-{now.day} {week_day_dict[now.weekday()]} {now.hour}:{now.minute}" \
+        + "\n为你送上今日社区热帖：" \
+        + "\n1. " + last_item[1] \
+        + "\n2. " + last_item[2] \
+        + "\n3. " + last_item[3] \
+        + "\n4. " + last_item[4] \
+        + "\n5. " + last_item[5]
     try:
         await bot.send_group_msg(group_id=global_qqnumber.RSS_TEST,
+                                 message=push_message)
+        await bot.send_group_msg(group_id=global_qqnumber.DC_CS,
                                  message=push_message)
     except CQHttpError:
         pass

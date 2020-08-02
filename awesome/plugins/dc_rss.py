@@ -5,6 +5,8 @@ import datetime,feedparser,os
 from nonebot import on_command,CommandSession
 from aiocqhttp.exceptions import Error as CQHttpError
 from awesome.plugins.pl_config import global_qqnumber
+from awesome.plugins.util import dc_spiders
+
 
 
 '''
@@ -18,9 +20,9 @@ RSS_URL = "http://bbs.skyzc.top/atom"
 LATEST_UPDATED = 0
 
 # 命令任务
-@on_command('dc_rss',aliases=('论坛动态'),only_to_me=False)
+@on_command('dc_rss',aliases=('社区最新'),only_to_me=False)
 async def dc_rss_send(session:CommandSession):
-    print(os.getcwd())
+    # print(os.getcwd())
     message = rss_parse()
     push_message = \
     "> DC社区新帖/新回复\n" \
@@ -29,6 +31,33 @@ async def dc_rss_send(session:CommandSession):
     + "\n\nBY: " + message['entries_author']\
     + "\n" + message['entries_link']
     await session.send(push_message)
+
+# 命令任务
+@on_command('dc_last',aliases=('社区热帖','社区动态'),only_to_me=False)
+async def dc_rss_send(session:CommandSession):
+    bot = nonebot.get_bot()
+    last_item = dc_spiders.get_lastitem()
+
+    push_message = \
+        "> 小菲为你送上今日 DrinkCoffee 热帖：" \
+        + "\n1. " + last_item[1] \
+        + "\n2. " + last_item[2] \
+        + "\n3. " + last_item[3] \
+        + "\n4. " + last_item[4] \
+        + "\n5. " + last_item[5] \
+        + "\n#详情：http://bbs.skyzc.top"
+    try:
+        await session.send(push_message)
+    except CQHttpError:
+        pass
+    # message = rss_parse()
+    # push_message = \
+    # "> DC社区新帖/新回复\n" \
+    # + "\nTITLE： " + message['entries_title'] \
+    # + "\nSUMMARY： " + message['entries_summary'] + '...' \
+    # + "\n\nBY: " + message['entries_author']\
+    # + "\n" + message['entries_link']
+    # await session.send(push_message)
 
 # 计划任务。每天 8-23点 每20分钟 执行一次
 @nonebot.scheduler.scheduled_job('cron', hour='8-22',minute='0/20')
@@ -111,8 +140,6 @@ def save_file(item):
     except Exception as e:
         print("write error==>", e)
 
-# 获取 json 文件数据
-# TODO:日报功能
 def get_data():
     path = './awesome/plugins/pl_config/dc_rss_lastitem.json'
     data = 0

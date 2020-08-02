@@ -1,6 +1,7 @@
-APScheduler==3.6.3
-aiocqhttp==1.2.5
-nonebot==1.6.0
-requests==2.24.0
-feedparser==5.2.1
 pytz==2020.1
+lxml==4.5.0
+feedparser==5.2.1
+aiocqhttp==1.2.5
+APScheduler==3.6.3
+requests==2.24.0
+nonebot==1.6.0
