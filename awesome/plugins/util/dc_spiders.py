@@ -17,7 +17,7 @@ def get_lastitem():
         data = requests.get(URL)
         # print(data.text)
 
-        item = re.findall(r'<li><a .*>(.*?)</a></li>',data.text)
+        # item = re.findall(r'<li><a .*>(.*?)</a></li>',data.text)
         html = etree.HTML(data.text)
         item = html.xpath('//li/a/text()')
         for i in item:

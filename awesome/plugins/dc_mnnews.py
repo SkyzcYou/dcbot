@@ -9,6 +9,7 @@ from nonebot import on_command, CommandSession
 from awesome.plugins.pl_config import global_qqnumber
 from awesome.plugins.util import news_spiders
 from awesome.plugins.util import dc_spiders
+from awesome.plugins.util import kr_news_spiders
 from awesome.plugins.util.huanqiu_news_api import *
 
 
@@ -57,6 +58,7 @@ async def _():
 # 命令任务：手动获取新闻
 @on_command('tech_news', aliases=('科技新闻'), only_to_me=False)
 async def send_tech_news(session: CommandSession):
+    # 获取环球网科技新闻
     tech_news = news_spiders.get_news(TECH_URL)
     now = datetime.now(pytz.timezone('Asia/Shanghai'))
 
@@ -73,8 +75,34 @@ async def send_tech_news(session: CommandSession):
 
     await session.send(push_message)
 
+# 命令任务：手动获取新闻
+@on_command('newsflasher', aliases=('互联网快讯'), only_to_me=False)
+async def send_newsflasher(session: CommandSession):
+    # 获取 36Kr 互联网快讯
+    newsflasher_data = kr_news_spiders.get_newsflashes()
+    print(newsflasher_data)
+    now = datetime.now(pytz.timezone('Asia/Shanghai'))
 
-# TODO：每日热帖推送
+
+    push_message = \
+        "> DC_小菲为你送上当前互联网快讯\n" \
+        + f"NOW：{now.year}-{now.month}-{now.day} {week_day_dict[now.weekday()]} {now.hour}:{now.minute}" \
+        + "\n1. " + newsflasher_data[0] \
+        + "\n2. " + newsflasher_data[1] \
+        + "\n3. " + newsflasher_data[2] \
+        + "\n4. " + newsflasher_data[3] \
+        + "\n5. " + newsflasher_data[4] \
+        + "\n详情：http://t.cn/RB5GyFu"  #  短链接转换：https://www.helingqi.com/url.php 使用新浪的t.cn
+
+    try:
+        await session.send(push_message)
+
+    except Exception as e:
+        print(e)
+
+
+
+
 # NightTime 每天23点
 @nonebot.scheduler.scheduled_job('cron', hour='23')
 async def _():
