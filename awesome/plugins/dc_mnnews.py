@@ -27,7 +27,6 @@ week_day_dict = {
         6: '星期天',
     }
 
-# TODO: 早安心语/每日早报
 # 计划任务：MorningTime 每天8点,推送早报
 @nonebot.scheduler.scheduled_job('cron', hour='8')
 async def _():
@@ -80,7 +79,6 @@ async def send_tech_news(session: CommandSession):
 async def send_newsflasher(session: CommandSession):
     # 获取 36Kr 互联网快讯
     newsflasher_data = kr_news_spiders.get_newsflashes()
-    print(newsflasher_data)
     now = datetime.now(pytz.timezone('Asia/Shanghai'))
 
 
@@ -95,8 +93,8 @@ async def send_newsflasher(session: CommandSession):
         + "\n详情：http://t.cn/RB5GyFu"  #  短链接转换：https://www.helingqi.com/url.php 使用新浪的t.cn
 
     try:
+        print(push_message)
         await session.send(push_message)
-
     except Exception as e:
         print(e)
 
@@ -118,7 +116,8 @@ async def _():
         + "\n2. " + last_item[2] \
         + "\n3. " + last_item[3] \
         + "\n4. " + last_item[4] \
-        + "\n5. " + last_item[5]
+        + "\n5. " + last_item[5] \
+        + "\n详情：http://bbs.skyzc.top"
     try:
         await bot.send_group_msg(group_id=global_qqnumber.RSS_TEST,
                                  message=push_message)

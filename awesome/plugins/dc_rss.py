@@ -39,7 +39,7 @@ async def dc_rss_send(session:CommandSession):
     last_item = dc_spiders.get_lastitem()
 
     push_message = \
-        "> 小菲为你送上今日 DrinkCoffee 热帖：" \
+        "> DrinkCoffee 实时动态获取完毕：" \
         + "\n1. " + last_item[1] \
         + "\n2. " + last_item[2] \
         + "\n3. " + last_item[3] \
@@ -77,7 +77,7 @@ async def _():
 
     try:
         if now_updated != old_updated:
-            # await bot.send_group_msg(group_id=762186255, message=push_message)
+            await bot.send_group_msg(group_id=global_qqnumber.DC_CS, message=push_message)
             await bot.send_group_msg(group_id=global_qqnumber.RSS_TEST,message=push_message)
             # 存储数据
             save_file(message)
