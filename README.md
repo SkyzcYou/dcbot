@@ -1,4 +1,7 @@
 # dcbot
+
+**由于Coolq机器人已死亡,此项目主要功能已失效. 2020.10.1 注**
+
 一个服务于DC社区QQ群机器人，实现众多实用性功能。
 
 基于 [酷Q](https://cqp.cc/t/23253) , [CQHTTP](https://cqhttp.cc/docs/4.15/#/) 以及 [NoneBot](https://nonebot.cqp.moe/) 。
