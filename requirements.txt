@@ -1,5 +1,5 @@
 pytz==2020.1
-lxml==4.5.0
+lxml==4.6.3
 feedparser==5.2.1
 aiocqhttp==1.2.5
 APScheduler==3.6.3
