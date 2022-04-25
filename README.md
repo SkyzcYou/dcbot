@@ -1,4 +1,5 @@
 # dcbot
+[![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/1/badge)](https://bestpractices.coreinfrastructure.org/projects/1)
 
 **由于Coolq机器人已死亡,此项目主要功能已失效. 2020.10.1 注**
 
